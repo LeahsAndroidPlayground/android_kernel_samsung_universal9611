@@ -294,9 +294,9 @@ void remove_migration_ptes(struct page *old, struct page *new, bool locked)
 	};
 
 	if (locked)
-		rmap_walk_locked(new, &rwc, NULL);
+		rmap_walk_locked(new, &rwc);
 	else
-		rmap_walk(new, &rwc, NULL);
+		rmap_walk(new, &rwc);
 }
 
 /*
@@ -1094,7 +1094,7 @@ static int __unmap_and_move(struct page *page, struct page *newpage,
 		VM_BUG_ON_PAGE(PageAnon(page) && !PageKsm(page) && !anon_vma,
 				page);
 		try_to_unmap(page,
-			TTU_MIGRATION|TTU_IGNORE_MLOCK|TTU_IGNORE_ACCESS, NULL);
+			TTU_MIGRATION|TTU_IGNORE_MLOCK|TTU_IGNORE_ACCESS);
 		page_was_mapped = 1;
 	}
 
@@ -1332,7 +1332,7 @@ static int unmap_and_move_huge_page(new_page_t get_new_page,
 
 	if (page_mapped(hpage)) {
 		try_to_unmap(hpage,
-			TTU_MIGRATION|TTU_IGNORE_MLOCK|TTU_IGNORE_ACCESS, NULL);
+			TTU_MIGRATION|TTU_IGNORE_MLOCK|TTU_IGNORE_ACCESS);
 		page_was_mapped = 1;
 	}
 
@@ -1433,17 +1433,6 @@ int migrate_pages(struct list_head *from, new_page_t get_new_page,
 				rc = unmap_and_move(get_new_page, put_new_page,
 						private, page, pass > 2, mode,
 						reason);
-
-			if ((reason == MR_CMA) && (rc != -EAGAIN) &&
-						(rc != MIGRATEPAGE_SUCCESS)) {
-				phys_addr_t pa = page_to_phys(page);
-
-				pr_err("%s failed(%d): PA%pa,mapcnt%d,cnt%d\n",
-					__func__, rc, &pa,
-					page_mapcount(page), page_count(page));
-
-				dump_page_owner(page);
-			}
 
 			switch(rc) {
 			case -ENOMEM:
@@ -2604,7 +2593,7 @@ static void migrate_vma_unmap(struct migrate_vma *migrate)
 			continue;
 
 		if (page_mapped(page)) {
-			try_to_unmap(page, flags, NULL);
+			try_to_unmap(page, flags);
 			if (page_mapped(page))
 				goto restore;
 		}
