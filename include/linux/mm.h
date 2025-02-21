@@ -2730,14 +2730,16 @@ void __init setup_nr_node_ids(void);
 static inline void setup_nr_node_ids(void) {}
 #endif
 
-#define MEM_BOOST_THRESHOLD ((300 * 1024 * 1024) / (PAGE_SIZE))
-extern static unsigned long last_mode_change;
-#define MEM_BOOST_MAX_TIME (5 * HZ) /* 5 sec */
-enum mem_boost {
-	NO_BOOST,
-	BOOST_MID = 1,
-	BOOST_HIGH = 2,
-};
+// #define MEM_BOOST_THRESHOLD ((300 * 1024 * 1024) / (PAGE_SIZE))
+// extern static unsigned long last_mode_change;
+// #define MEM_BOOST_MAX_TIME (5 * HZ) /* 5 sec */
+// enum mem_boost {
+//  	NO_BOOST,
+//  	BOOST_MID = 1,
+//  	BOOST_HIGH = 2,
+// };
+// Very hack-y thing
+#include "../../mm/vmscan.c"
 inline bool need_memory_boosting(struct pglist_data *pgdat)
 {
 	bool ret;
