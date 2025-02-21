@@ -2740,30 +2740,30 @@ static inline void setup_nr_node_ids(void) {}
 // };
 // Very hack-y thing
 #include "../../mm/vmscan.c"
-inline bool need_memory_boosting(struct pglist_data *pgdat)
-{
-	bool ret;
-	unsigned long pgdatfile = node_page_state(pgdat, NR_ACTIVE_FILE) +
-				node_page_state(pgdat, NR_INACTIVE_FILE);
-
-	if (time_after(jiffies, last_mode_change + MEM_BOOST_MAX_TIME) ||
-			pgdatfile < MEM_BOOST_THRESHOLD)
-		mem_boost_mode = NO_BOOST;
-
-	switch (mem_boost_mode) {
-	case BOOST_HIGH:
-		ret = true;
-		break;
-	case BOOST_MID:
-		ret = mem_boost_pgdat_wmark(pgdat) ? false : true;
-		break;
-	case NO_BOOST:
-	default:
-		ret = false;
-		break;
-	}
-	return ret;
-}
+// inline bool need_memory_boosting(struct pglist_data *pgdat)
+// {
+// 	bool ret;
+// 	unsigned long pgdatfile = node_page_state(pgdat, NR_ACTIVE_FILE) +
+// 				node_page_state(pgdat, NR_INACTIVE_FILE);
+// 
+// 	if (time_after(jiffies, last_mode_change + MEM_BOOST_MAX_TIME) ||
+// 			pgdatfile < MEM_BOOST_THRESHOLD)
+// 		mem_boost_mode = NO_BOOST;
+// 
+// 	switch (mem_boost_mode) {
+// 	case BOOST_HIGH:
+// 		ret = true;
+// 		break;
+// 	case BOOST_MID:
+// 		ret = mem_boost_pgdat_wmark(pgdat) ? false : true;
+// 		break;
+// 	case NO_BOOST:
+// 	default:
+// 		ret = false;
+// 		break;
+// 	}
+// 	return ret;
+// }
 enum memsize_kernel_type {
 	MEMSIZE_KERNEL_KERNEL = 0,
 	MEMSIZE_KERNEL_PAGING,
