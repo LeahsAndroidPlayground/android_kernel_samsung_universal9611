@@ -12,7 +12,6 @@
 # include <libintl.h>
 #else
 # include <features.h>
-# include <libintl.h>
 // __attribute_format_arg__(1)
 // Time to expand !!!
 __attribute__ ((__format_arg__ (1)))
