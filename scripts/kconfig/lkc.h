@@ -13,7 +13,9 @@
 #else
 # include <features.h>
 # include <libintl.h>
-__attribute_format_arg__(1)
+// __attribute_format_arg__(1)
+// Time to expand !!!
+__attribute__ ((__format_arg__ (1)))
 static inline const char *gettext(const char *txt) { return txt; }
 static inline void textdomain(const char *domainname) {}
 static inline void bindtextdomain(const char *name, const char *dir) {}
