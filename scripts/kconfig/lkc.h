@@ -12,6 +12,7 @@
 # include <libintl.h>
 #else
 # include <features.h>
+# include <libintl.h>
 __attribute_format_arg__(1)
 static inline const char *gettext(const char *txt) { return txt; }
 static inline void textdomain(const char *domainname) {}
